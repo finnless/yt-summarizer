@@ -16,7 +16,6 @@ llm = OpenAI(temperature=0)
 
 class Summarizer:
     def __init__(self, vectorstore=None):
-        print('INIT CALLED')
         self.vectorstore = vectorstore or self.init_vectorstore()
         self.qa = ConversationalRetrievalChain.from_llm(llm, self.vectorstore.as_retriever(), get_chat_history=self.get_chat_history, return_source_documents=True)
 
@@ -84,7 +83,6 @@ class Summarizer:
         """
         Adds a new video to the vectorstore.
         """
-        print(f'Adding video: {video_id}')
         video = self.retrieve_video(video_id)
         transcript = self.chunkify_transcript(video)
 
@@ -119,7 +117,6 @@ class Summarizer:
         video_ids = self.extract_youtube_ids(query)
 
         if video_ids:
-            print(f'Video ids found: {video_ids}. Adding only the first one.')
             try:
                 result = {'answer': f'I just watched that video. Here is a summary:\n\n{self.add_video(video_ids[0])}'}
             except (NoTranscriptFound, TranscriptsDisabled):

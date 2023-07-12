@@ -15,7 +15,6 @@ def handle_message(msg):
 
     if 'source' in msg:
         start = 0 if msg['source']['start'] == 'TEST' else int(msg['source']['start'])
-        print('start1=', start)
         with st.expander('Source'):
             st.video(f"https://www.youtube.com/watch?v={msg['source']['video_id']}", start_time=start)
 
@@ -43,10 +42,8 @@ if prompt := st.chat_input(placeholder=""):
 
         if 'source_documents' in result:
             metadata = result['source_documents'][0].metadata
-            # print('metadata=\n', metadata)
             st.session_state.messages.append({"role": "assistant", "content": response, "source": metadata})
             start = 0 if metadata['start'] == 'TEST' else int(metadata['start'])
-            print('start2=', start)
             with st.expander('Source'):
                 st.video(f"https://www.youtube.com/watch?v={metadata['video_id']}", start_time=start)
         else:
