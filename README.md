@@ -7,9 +7,7 @@
 You may paste one or more youtube urls into the StreamLit interface.
 Here are some great examples: https://www.youtube.com/watch?v=rn_8GXNN7_Q, https://www.youtube.com/watch?v=KMOV1Zy8YeM
 
-Those videos captions' get indexed and stored in a vector database.
-
-You may then have a conversation with the chat bot about the contents of the video.
+Those videos captions' get indexed and stored in a vector database. You may then have a conversation with the chat bot about the contents of the video. The chatbot will include embed the source video starting at the time the information is spoken.
 
 ### Python Module
 You may also use the python class.
@@ -28,6 +26,9 @@ You may also use the python class.
 - For new video transcripts, it splits the transcript into manageable chunks and appends these chunks to the Chroma vectorstore.
 - Summarization of videos is performed by running a map-reduce type summary chain on the video transcript. The summarized text is added to the vectorstore.
 - For each new user query, the summarizer decides whether it should add a new video or answer a question. If video IDs are found in the conversation, it tries to add the video to the Chroma document store. If the video transcript is not available, it will inform the user to try another video. If no video IDs are found, it treats the last user message as a question and tries to answer it. Question answering is performed by using a pre-built conversational retrieval chain.
+
+## Sample Conversation
+![yt-summarizer-chat](https://github.com/finnless/yt-summarizer/assets/6785029/e9dfc9a0-34a3-4971-85a8-fafb91557791)
 
 ## Future Roadmap
 - Image Recognition
