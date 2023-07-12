@@ -6,6 +6,7 @@ from langchain.docstore.document import Document
 from langchain.embeddings.openai import OpenAIEmbeddings
 from langchain.vectorstores import Chroma
 from langchain.llms import OpenAI
+from langchain.chat_models import ChatOpenAI
 from langchain.chains import ConversationalRetrievalChain
 from langchain.chains.summarize import load_summarize_chain
 
@@ -13,9 +14,11 @@ from langchain.chains.summarize import load_summarize_chain
 class Summarizer:
     def __init__(self, openai_api_key=None, vectorstore=None):
         # Define the language model
-        self.llm = OpenAI(openai_api_key=openai_api_key, temperature=0)
+        self.llm4 = ChatOpenAI(openai_api_key=openai_api_key, temperature=0, model='gpt-4')
+        self.llm35 = ChatOpenAI(openai_api_key=openai_api_key, temperature=0, model='gpt-3.5-turbo')
+        self.llm3 = OpenAI(openai_api_key=openai_api_key, temperature=0)
         self.vectorstore = vectorstore or self.init_vectorstore()
-        self.qa = ConversationalRetrievalChain.from_llm(self.llm, self.vectorstore.as_retriever(), get_chat_history=self.get_chat_history, return_source_documents=True)
+        self.qa = ConversationalRetrievalChain.from_llm(self.llm4, self.vectorstore.as_retriever(), get_chat_history=self.get_chat_history, return_source_documents=True, condense_question_llm = self.llm35)
 
     def init_vectorstore(self):
         embeddings = OpenAIEmbeddings()
@@ -50,7 +53,7 @@ class Summarizer:
         transcript = YouTubeTranscriptApi.get_transcript(video_id)
         return {'transcript': transcript, 'video_id': video_id}
 
-    def chunkify_transcript(self, video, chunk_size=30, overlap=4):
+    def chunkify_transcript(self, video, chunk_size=50, overlap=5):
         """
         Splits the video transcript into chunks.
         """
@@ -93,7 +96,7 @@ class Summarizer:
         Summarizes a video transcript.
         """
         docs = [Document(page_content=t["text"].strip(" ")) for t in transcript_pieces]
-        chain = load_summarize_chain(self.llm, chain_type="map_reduce")
+        chain = load_summarize_chain(self.llm3, chain_type="map_reduce")
         summary = chain.run(docs)
 
         metadatas = [{'start': 'TEST', 'video_id': transcript_pieces[0]['video_id']}]
@@ -116,7 +119,7 @@ class Summarizer:
 
         if video_ids:
             try:
-                result = {'answer': f'I just watched that video. Here is a summary:\n\n{self.add_video(video_ids[0])}'}
+                result = {'answer': f'I just watched that video. Feel free to ask me questions about it. Here is a summary:\n\n{self.add_video(video_ids[0])}'}
             except (NoTranscriptFound, TranscriptsDisabled):
                 result = {'answer': f'I cannot find a transcript for {video_ids[0]}. Try another video.'}
         else:

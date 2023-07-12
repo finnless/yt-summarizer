@@ -7,7 +7,7 @@ def initialize_components():
         st.session_state.summarizer = Summarizer(openai_api_key=openai_api_key)
 
     if "messages" not in st.session_state:
-        st.session_state["messages"] = [{"role": "assistant", "content": "How can I help you?"}]
+        st.session_state["messages"] = [{"role": "assistant", "content": "Hello! Send me an interesting YouTube video for us to talk about!"}]
 
 def handle_message(msg):
     """Handle a message in the chat interface."""
