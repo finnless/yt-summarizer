@@ -1,5 +1,6 @@
 # yt-summarizer
-[![Streamlit App](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)]([https://finnless-waam-app-xf6cqs.streamlit.app/](https://yt-summarizer-chat.streamlit.app/))
+[![Streamlit App](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://yt-summarizer-chat.streamlit.app/)
+
 🦜️🔗📺 A langchain summarizer for YouTube videos.
 
 Uses StreamLit, OpenAI API, and LangChain.
