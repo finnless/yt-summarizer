@@ -131,7 +131,7 @@ class Summarizer:
                 try:
                     result = {'answer': f'I just watched that video. Here is a summary:\n\n{self.add_video(video_ids[0])}'}
                 except (NoTranscriptFound, TranscriptsDisabled):
-                    result = {'answer': f'I can not find a transcript for {video_ids[0]}. Try another video.'}
+                    result = {'answer': f'I cannot find a transcript for {video_ids[0]}. Try another video.'}
             else:
                 result = self.qa({"question": query, "chat_history": chat_history})
         else:
