@@ -26,6 +26,10 @@ st.title("YouTube Video Summarizer")
 with st.sidebar:
     openai_api_key = st.text_input("OpenAI API Key", type="password")
 
+if not openai_api_key:
+    st.info("Add an OpenAI API key to continue.")
+    st.stop()
+
 # Initialize chat and summarizer
 initialize_components()
 
@@ -36,10 +40,6 @@ for msg in st.session_state.messages:
 if prompt := st.chat_input(placeholder=""):
     st.session_state.messages.append({"role": "user", "content": prompt})
     st.chat_message("user").write(prompt)
-
-    if not openai_api_key:
-        st.info("Add an OpenAI API key to continue.")
-        st.stop()
 
     with st.chat_message("assistant"):
         result = st.session_state.summarizer.new_query(st.session_state.messages)

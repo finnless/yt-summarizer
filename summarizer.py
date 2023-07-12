@@ -17,11 +17,11 @@ class Summarizer:
         self.llm4 = ChatOpenAI(openai_api_key=openai_api_key, temperature=0, model='gpt-4')
         self.llm35 = ChatOpenAI(openai_api_key=openai_api_key, temperature=0, model='gpt-3.5-turbo')
         self.llm3 = OpenAI(openai_api_key=openai_api_key, temperature=0)
-        self.vectorstore = vectorstore or self.init_vectorstore()
+        self.vectorstore = vectorstore or self.init_vectorstore(openai_api_key)
         self.qa = ConversationalRetrievalChain.from_llm(self.llm4, self.vectorstore.as_retriever(), get_chat_history=self.get_chat_history, return_source_documents=True, condense_question_llm = self.llm35)
 
-    def init_vectorstore(self):
-        embeddings = OpenAIEmbeddings()
+    def init_vectorstore(self, openai_api_key):
+        embeddings = OpenAIEmbeddings(openai_api_key=openai_api_key)
         return Chroma("langchain_store", embeddings)
 
     @staticmethod
