@@ -1,4 +1,5 @@
 # yt-summarizer
+[![Streamlit App](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)]([https://finnless-waam-app-xf6cqs.streamlit.app/](https://yt-summarizer-chat.streamlit.app/))
 🦜️🔗📺 A langchain summarizer for YouTube videos.
 
 Uses StreamLit, OpenAI API, and LangChain.
@@ -6,7 +7,7 @@ Uses StreamLit, OpenAI API, and LangChain.
 
 ## Usage
 You may paste one or more youtube urls into the StreamLit interface.
-Here is a great example: https://www.youtube.com/watch?v=rn_8GXNN7_Q
+Here are some great examples: https://www.youtube.com/watch?v=rn_8GXNN7_Q, https://www.youtube.com/watch?v=KMOV1Zy8YeM
 
 Those videos captions' get indexed and stored in a vector database.
 
