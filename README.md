@@ -1,16 +1,22 @@
-# yt-summarizer
-[![Streamlit App](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://yt-summarizer-chat.streamlit.app/)
-
-🦜️🔗📺 A langchain summarizer for YouTube videos using StreamLit, the OpenAI API, and LangChain.
+<div align="center">
+  <div id="user-content-toc">
+    <ul>
+      <summary><h1 style="display: inline-block;">🦜️🔗📺 yt-summarizer</h1></summary>
+    </ul>
+  </div>
+</div>
+<div align="center">
+      <a href="https://yt-summarizer-chat.streamlit.app/"><img src="https://static.streamlit.io/badges/streamlit_badge_black_white.svg"/></a>
+      <img src="https://img.shields.io/github/stars/finnless/yt-summarizer?color=blue&style=social"/>
+</div>
+<br>
+A langchain summarizer for YouTube videos using StreamLit, the OpenAI API, and LangChain.
 
 ## Usage
 You may paste one or more youtube urls into the StreamLit interface.
 Here are some great examples: https://www.youtube.com/watch?v=rn_8GXNN7_Q, https://www.youtube.com/watch?v=KMOV1Zy8YeM
 
 Those videos captions' get indexed and stored in a vector database. You may then have a conversation with the chat bot about the contents of the video. The chatbot will include embed the source video starting at the time the information is spoken.
-
-### Python Module
-You may also use the python class.
 
 ## Technical Description
 ### Web Application (`app.py`)
