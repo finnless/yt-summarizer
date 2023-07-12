@@ -10,14 +10,12 @@ from langchain.chains import ConversationalRetrievalChain
 from langchain.chains.summarize import load_summarize_chain
 
 
-# Define the language model
-llm = OpenAI(temperature=0)
-
-
 class Summarizer:
-    def __init__(self, vectorstore=None):
+    def __init__(self, openai_api_key=None, vectorstore=None):
+        # Define the language model
+        self.llm = OpenAI(openai_api_key=openai_api_key, temperature=0)
         self.vectorstore = vectorstore or self.init_vectorstore()
-        self.qa = ConversationalRetrievalChain.from_llm(llm, self.vectorstore.as_retriever(), get_chat_history=self.get_chat_history, return_source_documents=True)
+        self.qa = ConversationalRetrievalChain.from_llm(self.llm, self.vectorstore.as_retriever(), get_chat_history=self.get_chat_history, return_source_documents=True)
 
     def init_vectorstore(self):
         embeddings = OpenAIEmbeddings()
@@ -95,7 +93,7 @@ class Summarizer:
         Summarizes a video transcript.
         """
         docs = [Document(page_content=t["text"].strip(" ")) for t in transcript_pieces]
-        chain = load_summarize_chain(llm, chain_type="map_reduce")
+        chain = load_summarize_chain(self.llm, chain_type="map_reduce")
         summary = chain.run(docs)
 
         metadatas = [{'start': 'TEST', 'video_id': transcript_pieces[0]['video_id']}]

@@ -4,7 +4,7 @@ from summarizer import Summarizer
 def initialize_components():
     """Initialize summarizer and messages."""
     if "summarizer" not in st.session_state:
-        st.session_state.summarizer = Summarizer()
+        st.session_state.summarizer = Summarizer(openai_api_key=openai_api_key)
 
     if "messages" not in st.session_state:
         st.session_state["messages"] = [{"role": "assistant", "content": "How can I help you?"}]
@@ -23,6 +23,9 @@ st.set_page_config(page_title="YouTube Video Summarizer", page_icon='📺')
 
 st.title("YouTube Video Summarizer")
 
+with st.sidebar:
+    openai_api_key = st.text_input("OpenAI API Key", type="password")
+
 # Initialize chat and summarizer
 initialize_components()
 
@@ -34,13 +37,17 @@ if prompt := st.chat_input(placeholder=""):
     st.session_state.messages.append({"role": "user", "content": prompt})
     st.chat_message("user").write(prompt)
 
+    if not openai_api_key:
+        st.info("Add an OpenAI API key to continue.")
+        st.stop()
+
     with st.chat_message("assistant"):
         result = st.session_state.summarizer.new_query(st.session_state.messages)
         response = result['answer']
 
         st.write(response)
 
-        if 'source_documents' in result:
+        if ('source_documents' in result) and result['source_documents'] != []:
             metadata = result['source_documents'][0].metadata
             st.session_state.messages.append({"role": "assistant", "content": response, "source": metadata})
             start = 0 if metadata['start'] == 'TEST' else int(metadata['start'])
