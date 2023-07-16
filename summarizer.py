@@ -10,6 +10,8 @@ from langchain.chat_models import ChatOpenAI
 from langchain.chains import ConversationalRetrievalChain
 from langchain.chains.summarize import load_summarize_chain
 
+from langchain.document_loaders import YoutubeLoader
+
 
 class Summarizer:
     def __init__(self, openai_api_key=None, vectorstore=None):
@@ -45,6 +47,17 @@ class Summarizer:
             '([^&=%\?]{11})'
         )
         return [match[3] for match in re.findall(youtube_regex, s)]
+
+    @staticmethod
+    def get_video_info(video_id):
+        """
+        Extracts video metadata from youtube video id.
+        Hacky ugly wrapper for langchain's YoutubeLoader.
+        """
+        dummy = type("Dummy", (object,), {})()
+        dummy.video_id = video_id
+        meta = YoutubeLoader._get_video_info(dummy)
+        return meta
 
     def retrieve_video(self, video_id):
         """
