@@ -9,6 +9,7 @@ from langchain.llms import OpenAI
 from langchain.chat_models import ChatOpenAI
 from langchain.chains import ConversationalRetrievalChain
 from langchain.chains.summarize import load_summarize_chain
+from langchain.prompts import PromptTemplate
 
 
 class Summarizer:
@@ -18,7 +19,21 @@ class Summarizer:
         self.llm35 = ChatOpenAI(openai_api_key=openai_api_key, temperature=0, model='gpt-3.5-turbo')
         self.llm3 = OpenAI(openai_api_key=openai_api_key, temperature=0)
         self.vectorstore = vectorstore or self.init_vectorstore(openai_api_key)
-        self.qa = ConversationalRetrievalChain.from_llm(self.llm4, self.vectorstore.as_retriever(), get_chat_history=self.get_chat_history, return_source_documents=True, condense_question_llm = self.llm35)
+        self.prompt = PromptTemplate(
+            input_variables=["question", "source", "chat_history"],
+            template=(
+                "Use the following pieces of context to answer the question at the end. If you don't know the answer, just say that you don't know, don't try to make up an answer. "
+                "Do not repeat or restate information already present in the chat history. "
+                "If a point has already been made, do not restate it; add only new relevant information.
+{source}
+"
+                "Chat History:
+{chat_history}
+Question: {question}
+Helpful Answer:"
+            ),
+        )
+        self.qa = ConversationalRetrievalChain.from_llm(self.llm4, self.vectorstore.as_retriever(), get_chat_history=self.get_chat_history, return_source_documents=True, condense_question_llm = self.llm35, prompt=self.prompt)
 
     def init_vectorstore(self, openai_api_key):
         embeddings = OpenAIEmbeddings(openai_api_key=openai_api_key)
